@@ -3,9 +3,7 @@ tags: [binary search]
 ---
 
 # Find First and Last Position of Element in Sorted-array
-Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
-
-If target is not found in the array, return [-1, -1].
+Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value. If target is not found in the array, return [-1, -1].
 
 ## Variants
 
@@ -68,55 +66,55 @@ def searchRange(self, nums: List[int], target: int) -> List[int]:
 **Double**
 ```python
 {
-    nums: [5,7,7,8,8,10],
-    target: 8
+    "nums": [5,7,7,8,8,10],
+    "target": 8
 }
 ```
 
 ```python
 {
-    expected: [3,4]
+    "expected": [3,4]
 }
 ```
 
 **Not Present**
 ```python
 {
-    nums: [5,7,7,8,8,10],
-    target: 6
+    "nums": [5,7,7,8,8,10],
+    "target": 6
 }
 ```
 
 ```python
 {
-    expected: [-1,-1]
+    "expected": [-1,-1]
 }
 ```
 
 **Empty**
 ```python
 {
-    nums: [],
-    target: 6
+    "nums": [],
+    "target": 6
 }
 ```
 
 ```python
 {
-    expected: [-1,-1]
+    "expected": [-1,-1]
 }
 ```
 
 **All**
 ```python
 {
-    nums: [6,6,6,6,6],
-    target: 6
+    "nums": [6,6,6,6,6],
+    "target": 6
 }
 ```
 
 ```python
 {
-    expected: [0,4]
+    "expected": [0,4]
 }
 ```
