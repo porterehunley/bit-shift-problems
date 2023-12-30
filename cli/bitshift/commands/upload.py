@@ -115,7 +115,6 @@ def upload(problem_file):
     child_idx += 3
 
   print('tests', tests)
-  # now it's fully parsed
 
   for variant, code in variants.items():
     doc_ref = db.collection('problems').document(f'{title.replace(' ','_')}--{variant}')

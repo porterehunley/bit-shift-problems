@@ -9,7 +9,7 @@ Given an array of integers nums sorted in non-decreasing order, find the startin
 
 **Debugging**
 ```python
-def searchRange(self, nums: List[int], target: int) -> List[int]:
+def searchRange(nums: List[int], target: int) -> List[int]:
     start, end = 0, len(nums)-1
     while start < end:
         mid = start +(end-start)//2
@@ -36,7 +36,7 @@ def searchRange(self, nums: List[int], target: int) -> List[int]:
 
 **Missing Logic**
 ```python
-def searchRange(self, nums: List[int], target: int) -> List[int]:
+def searchRange(nums: List[int], target: int) -> List[int]:
     start, end = 0, len(nums)-1
     while start < end:
         mid = start +(end-start)//2
