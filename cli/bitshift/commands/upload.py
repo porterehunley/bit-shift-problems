@@ -27,6 +27,8 @@ def validate_input_section(node):
   validate_code_section(node)
 
   code_str = node['children'][0]['content']
+  print('-----')
+  print(code_str)
   function_input = json.loads(code_str)
 
   return function_input
@@ -117,18 +119,19 @@ def upload(problem_file):
   print('tests', tests)
 
   for variant, code in variants.items():
-    doc_ref = db.collection('problems').document(f'{title.replace(' ','_')}--{variant}')
+    doc_ref = db.collection('problems').document(f'{title.replace(" ","_")}--{variant}')
     doc_ref.set({
       "code": code,
       "description": description,
       "header": problem_header,
       "tags": header_info['tags'],
+      "difficulty": header_info['difficulty'],
       "title": title,
       "type": variant
     })
 
     for test_name in tests.keys():
-      tets_ref = db.collection('problems').document(f'{title.replace(' ','_')}--{variant}').collection('tests').document(test_name)
+      tets_ref = db.collection('problems').document(f'{title.replace(" ","_")}--{variant}').collection('tests').document(test_name)
       tets_ref.set({
         "input": tests[test_name][0],
         "output": tests[test_name][1]

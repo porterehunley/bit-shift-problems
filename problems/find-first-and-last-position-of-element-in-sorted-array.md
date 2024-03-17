@@ -1,9 +1,12 @@
 ---
 tags: [binary search]
+difficulty: Medium
 ---
 
 # Find First and Last Position of Element in Sorted-array
-Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value. If target is not found in the array, return [-1, -1].
+Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values in the path equals targetSum. Each path should be returned as a list of the node values, not node references.
+
+A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
 
 ## Variants
 
