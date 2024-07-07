@@ -5,6 +5,24 @@ import json
 from mistletoe import Document, ast_renderer
 from bitshift.credentials import app, db
 from firebase_admin import firestore 
+import re
+from typing import List, Tuple
+
+def parse_parameters(header: str) -> List[Tuple[str, str]]:
+  pattern = r'\((.*?)\)'
+  match = re.search(pattern, header)
+  if not match:
+    raise ValueError("Invalid function header format")
+  
+  params_str = match.group(1)
+  params = params_str.split(',')
+  parsed_params = []
+  
+  for param in params:
+    name, param_type = param.split(':')
+    parsed_params.append({name.strip(): param_type.strip()})
+  
+  return parsed_params
 
 
 def is_variant_section(node):
@@ -80,11 +98,18 @@ def upload(problem_file):
     if validate_code_section(ast['children'][child_idx+1]): # Will raise error
       code = ast['children'][child_idx+1]['children'][0]['content']
       variants[variant_type] = code
+      if problem_header and code.split('\n')[0] != problem_header:
+        raise ValueError('Problem header must be the same in each variant')
+
       problem_header = code.split('\n')[0]
 
     child_idx += 2
 
   print('Header', problem_header)
+
+  parameters = parse_parameters(problem_header)
+  print('Parameters:', parameters)
+
   print('Variants', variants)
 
   # Now do the tests section
@@ -127,7 +152,8 @@ def upload(problem_file):
       "tags": header_info['tags'],
       "difficulty": header_info['difficulty'],
       "title": title,
-      "type": variant
+      "type": variant,
+      "parameters": parameters
     })
 
     for test_name in tests.keys():
