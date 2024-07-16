@@ -10,7 +10,7 @@ Given two strings word1 and word2, return the minimum number of operations requi
 
 **Missing Logic**
 ```python
-def minDistance(word1, word2):
+def minDistance(word1: str, word2: str):
 	m, n = len(word1), len(word2)
 	dp = [list(range(n+1))]
   dp += [[r+1]+[0]*n for r in range(m)]

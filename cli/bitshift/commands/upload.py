@@ -25,10 +25,10 @@ def parse_parameters(header: str) -> List[Tuple[str, str]]:
   return parsed_params
 
 
-def is_variant_section(node):
+def is_code_section(node):
   return (node['type'] == 'Paragraph' and 
           node['children'][0]['type'] == 'Strong' and
-          node['children'][0]['children'][0]['content'] in ['Debugging', 'Missing Logic'])
+          node['children'][0]['children'][0]['content'] in ['Problem', 'Truth'])
 
 
 def validate_code_section(node):
@@ -87,30 +87,52 @@ def upload(problem_file):
   if (len(ast['children']) < 3 or
     ast['children'][2]['type'] != 'Heading' or
     ast['children'][2]['level'] != 2 or 
-    ast['children'][2]['children'][0]['content'] != 'Variants'):
-    raise ValueError("Problem must have a valid variants section follwing description")  
-  
-  child_idx = 3
-  variants = {}
-  problem_header = None
-  while child_idx < len(ast['children']) and is_variant_section(ast['children'][child_idx]):
-    variant_type = ast['children'][child_idx]['children'][0]['children'][0]['content']
-    if validate_code_section(ast['children'][child_idx+1]): # Will raise error
-      code = ast['children'][child_idx+1]['children'][0]['content']
-      variants[variant_type] = code
-      if problem_header and code.split('\n')[0] != problem_header:
-        raise ValueError('Problem header must be the same in each variant')
+    ast['children'][2]['children'][0]['content'] != 'Code'):
+    raise ValueError("Problem must have a valid Code section follwing description")  
 
+
+  child_idx = 3
+  code_sections = {}
+  problem_header = None
+
+  # Problem section
+  if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
+    code_section_type = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    if code_section_type != 'Problem':
+      raise ValueError("Problem must have a Problem code sub-section followed by Truth")
+
+    if validate_code_section(ast['children'][child_idx+1]):
+      code = ast['children'][child_idx+1]['children'][0]['content']
+      code_sections['problem'] = code
       problem_header = code.split('\n')[0]
 
-    child_idx += 2
+  if not problem_header:
+    raise ValueError("Error parsing problem function header")
+  
+  child_idx += 2
+
+  # Truth section
+  if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
+    code_section_type = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    if code_section_type != 'Truth':
+      raise ValueError("Problem must have a Problem code sub-section followed by Truth")
+
+    if validate_code_section(ast['children'][child_idx+1]):
+      code = ast['children'][child_idx+1]['children'][0]['content']
+      code_sections['truth'] = code
+      problem_header = code.split('\n')[0]
+
+  if 'truth' not in code_sections.keys():
+    raise ValueError("Failed to parse truth section")
+
+  child_idx += 2
 
   print('Header', problem_header)
 
   parameters = parse_parameters(problem_header)
   print('Parameters:', parameters)
 
-  print('Variants', variants)
+  print('Code', code_sections)
 
   # Now do the tests section
   if (child_idx >= len(ast['children']) or
@@ -143,25 +165,24 @@ def upload(problem_file):
 
   print('tests', tests)
 
-  for variant, code in variants.items():
-    doc_ref = db.collection('problems').document(f'{title.replace(" ","_")}--{variant}')
-    doc_ref.set({
-      "code": code,
-      "description": description,
-      "header": problem_header,
-      "tags": header_info['tags'],
-      "difficulty": header_info['difficulty'],
-      "title": title,
-      "type": variant,
-      "parameters": parameters
-    })
+  doc_ref = db.collection('problems').document(f'{title.replace(" ","_")}')
+  doc_ref.set({
+    "code": code_sections['problem'],
+    "truth": code_sections['truth'],
+    "description": description,
+    "header": problem_header,
+    "tags": header_info['tags'],
+    "difficulty": header_info['difficulty'],
+    "title": title,
+    "parameters": parameters
+  })
 
-    for test_name in tests.keys():
-      tets_ref = db.collection('problems').document(f'{title.replace(" ","_")}--{variant}').collection('tests').document(test_name)
-      tets_ref.set({
-        "input": tests[test_name][0],
-        "output": tests[test_name][1]
-      })
+  for test_name in tests.keys():
+    tets_ref = db.collection('problems').document(f'{title.replace(" ","_")}').collection('tests').document(test_name)
+    tets_ref.set({
+      "input": tests[test_name][0],
+      "output": tests[test_name][1]
+    })
 
   print("Tests uploaded")
 

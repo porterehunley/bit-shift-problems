@@ -6,9 +6,9 @@ difficulty: Medium
 # Find First and Last Position of Element in Sorted-array
 Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values in the path equals targetSum. Each path should be returned as a list of the node values, not node references. A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
 
-## Variants
+## Code
 
-**Debugging**
+**Problem**
 ```python
 def searchRange(nums: List[int], target: int) -> List[int]:
     start, end = 0, len(nums)-1
@@ -35,31 +35,37 @@ def searchRange(nums: List[int], target: int) -> List[int]:
     return [idx1, idx0]
 ```
 
-**Missing Logic**
+**Truth**
 ```python
 def searchRange(nums: List[int], target: int) -> List[int]:
-    start, end = 0, len(nums)-1
-    while start < end:
-        mid = start +(end-start)//2
-        if nums[mid] <= target:
+    start = 0
+    end = len(nums) - 1
+    while (start < end):
+        mid = start + (end-start) // 2
+        if nums[mid] < target:
             start = mid + 1
-        else:
+
+        if nums[mid] >= target:
             end = mid
 
-    idx0 = start - 1
-    start, end = 0, len(nums)-1
-    while start < end:
-        mid = start + (end-start+1)//2
-        if nums[mid] < target:
-            start = mid
-        else:
-            end = mid-1
+    if not nums or nums[start] != target:
+        return [-1, -1]
 
-    idx1 = end + 1
-    if idx1 >=len(nums) or nums[idx1] != target:
-        return [-1,-1]
+    first = start
 
-    return [idx1, idx0]
+    start = 0
+    end = len(nums) - 1
+    while (start < end):
+        mid = start + (end-start) // 2
+        if nums[mid] <= target:
+            start = mid + 1
+
+        if nums[mid] > target:
+            end = mid
+
+    last = start - 1 if nums[start] != target else start
+
+    return [first, last]
 ```
 
 ## Tests
