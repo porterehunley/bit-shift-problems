@@ -120,7 +120,6 @@ def upload(problem_file):
     if validate_code_section(ast['children'][child_idx+1]):
       code = ast['children'][child_idx+1]['children'][0]['content']
       code_sections['truth'] = code
-      problem_header = code.split('\n')[0]
 
   if 'truth' not in code_sections.keys():
     raise ValueError("Failed to parse truth section")
