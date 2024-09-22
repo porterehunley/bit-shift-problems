@@ -28,7 +28,7 @@ def parse_parameters(header: str) -> List[Tuple[str, str]]:
 def is_code_section(node):
   return (node['type'] == 'Paragraph' and 
           node['children'][0]['type'] == 'Strong' and
-          node['children'][0]['children'][0]['content'] in ['Problem', 'Truth'])
+          node['children'][0]['children'][0]['content'] in ['Problem', 'Truth', 'Auxiliary'])
 
 
 def validate_code_section(node):
@@ -88,12 +88,22 @@ def upload(problem_file):
     ast['children'][2]['type'] != 'Heading' or
     ast['children'][2]['level'] != 2 or 
     ast['children'][2]['children'][0]['content'] != 'Code'):
-    raise ValueError("Problem must have a valid Code section follwing description")  
-
+    raise ValueError("Problem must have a valid Code section following description")  
 
   child_idx = 3
   code_sections = {}
   problem_header = None
+
+  # Auxiliary section
+  if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
+    code_section_type = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    if code_section_type == 'Auxiliary':
+      if validate_code_section(ast['children'][child_idx+1]):
+        code = ast['children'][child_idx+1]['children'][0]['content']
+        code_sections['auxiliary'] = code
+        child_idx += 2
+      else:
+        raise ValueError("Invalid Auxiliary code section")
 
   # Problem section
   if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
@@ -154,7 +164,7 @@ def upload(problem_file):
     test_input = json.loads(ast['children'][child_idx+1]['children'][0]['content'])
 
     if child_idx+2 >= len(ast['children']) or not validate_code_section(ast['children'][child_idx+2]):
-      raise ValueError(f'Missing or invalud output section for test {test_name}')
+      raise ValueError(f'Missing or invalid output section for test {test_name}')
     
     test_output = json.loads(ast['children'][child_idx+2]['children'][0]['content'])
 
@@ -165,7 +175,7 @@ def upload(problem_file):
   print('tests', tests)
 
   doc_ref = db.collection('problems').document(f'{title.replace(" ","_")}')
-  doc_ref.set({
+  upload_data = {
     "code": code_sections['problem'],
     "truth": code_sections['truth'],
     "description": description,
@@ -174,11 +184,16 @@ def upload(problem_file):
     "difficulty": header_info['difficulty'],
     "title": title,
     "parameters": parameters
-  })
+  }
+
+  if 'auxiliary' in code_sections:
+    upload_data["auxiliary"] = code_sections['auxiliary']
+
+  doc_ref.set(upload_data)
 
   for test_name in tests.keys():
-    tets_ref = db.collection('problems').document(f'{title.replace(" ","_")}').collection('tests').document(test_name)
-    tets_ref.set({
+    tests_ref = db.collection('problems').document(f'{title.replace(" ","_")}').collection('tests').document(test_name)
+    tests_ref.set({
       "input": tests[test_name][0],
       "output": tests[test_name][1]
     })

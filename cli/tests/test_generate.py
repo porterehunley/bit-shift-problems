@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 from unittest import mock
 
-# Assume the generate function is in cli/bitshift/commands/generate.py
 from bitshift.commands.generate import generate, TEMPLATE_PATH
 
 class TestGenerateCommand(unittest.TestCase):

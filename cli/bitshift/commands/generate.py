@@ -14,6 +14,7 @@ def slugify(title):
 
 def generate_markdown(title):
   """Generate markdown content based on the title by cloning a template."""
+  
   slug = slugify(title)
   file_name = f"{slug}.md"
   file_path = Path("problems") / file_name
