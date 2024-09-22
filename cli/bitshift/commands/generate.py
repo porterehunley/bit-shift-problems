@@ -14,11 +14,6 @@ def slugify(title):
 
 def generate_markdown(title):
   """Generate markdown content based on the title by cloning a template."""
-  if tags is None:
-      tags = []
-  if difficulty is None:
-      difficulty = "Medium"
-  
   slug = slugify(title)
   file_name = f"{slug}.md"
   file_path = Path("problems") / file_name
