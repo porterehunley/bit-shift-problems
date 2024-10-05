@@ -1,6 +1,7 @@
 import os
 import yaml
 import json
+import random
 
 from mistletoe import Document, ast_renderer
 from bitshift.credentials import app, db
@@ -171,8 +172,10 @@ def upload(problem_file):
     child_idx += 3
 
   print('tests', tests)
+  title_postfixes = random.sample(['1', '2'], 2)
+  title_one = title + '-' + title_postfixes[0]
 
-  doc_ref = db.collection('problems').document(f'{title.replace(" ","_")}')
+  doc_ref = db.collection('problems').document(f'{title_one.replace(" ","_")}')
   upload_data = {
     "code": code_sections['problem'],
     "truth": code_sections['truth'],
@@ -180,7 +183,7 @@ def upload(problem_file):
     "header": problem_header,
     "tags": header_info['tags'],
     "difficulty": header_info['difficulty'],
-    "title": title,
+    "title": title_one,
     "parameters": parameters
   }
 
@@ -198,7 +201,7 @@ def upload(problem_file):
 
   print("Tests uploaded")
 
-  variant_title = f"{title}-Truth"
+  variant_title = f"{title}-{title_postfixes[-1]}"
   variant_doc_ref = db.collection('problems').document(f'{variant_title.replace(" ","_")}')
   variant_upload_data = {
     "code": code_sections['truth'],
