@@ -53,8 +53,6 @@ def validate_input_section(node):
 
 
 def upload(problem_file):
-  client = firestore.client(app=app)
-
   yaml_content = ""
   separator_count = 0
   for line in problem_file:
@@ -199,6 +197,36 @@ def upload(problem_file):
     })
 
   print("Tests uploaded")
+
+  variant_title = f"{title}-Truth"
+  variant_doc_ref = db.collection('problems').document(f'{variant_title.replace(" ","_")}')
+  variant_upload_data = {
+    "code": code_sections['truth'],
+    "truth": code_sections['truth'],
+    "is_truth": True,
+    "description": description,
+    "header": problem_header,
+    "tags": header_info['tags'],
+    "difficulty": header_info['difficulty'],
+    "title": variant_title,
+    "parameters": parameters
+  }
+
+  if 'auxiliary' in code_sections:
+    variant_upload_data["auxiliary"] = code_sections['auxiliary']
+
+  variant_doc_ref.set(variant_upload_data)
+
+  for test_name in tests.keys():
+    tests_ref = db.collection('problems').document(f'{variant_title.replace(" ","_")}').collection('tests').document(test_name)
+    tests_ref.set({
+      "input": tests[test_name][0],
+      "output": tests[test_name][1]
+    })
+
+  print("Tests uploaded")
+
+  print("Truth uploaded")
 
 
 
