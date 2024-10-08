@@ -6,7 +6,7 @@ from cli.bitshift.commands.parse import parse_problem_file
 class TestParseProblemFile(unittest.TestCase):
   def setUp(self):
     self.maxDiff = None  # To display full diff when tests fail
-    self.data_dir = Path(__file__).parent / "data"
+    self.data_dir = Path(__file__).parent / "test-problems"
 
   def read_markdown(self, filename):
     file_path = self.data_dir / filename
@@ -20,7 +20,7 @@ class TestParseProblemFile(unittest.TestCase):
         "description": "This is a description of the sample problem.",
         "code_sections": {
           "problem": "def add(a: int, b: int) -> int:\n  return a + b",
-          "truth": '{"result": 3}'
+          "truth": "def add(a: int, b: int) -> int:\n  return a + b",
         },
         "problem_header": "def add(a: int, b: int) -> int:",
         "parameters": [
