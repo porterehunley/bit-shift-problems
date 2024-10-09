@@ -166,6 +166,8 @@ def parse_problem_file(problem_file):
     child_idx += 3
 
   print('tests', tests)
+  if not tests:
+    raise ValueError('Problem must have at least one test')
 
   return {
     "header_info": header_info,

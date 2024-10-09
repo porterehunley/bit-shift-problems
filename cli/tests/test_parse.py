@@ -65,7 +65,8 @@ class TestParseProblemFile(unittest.TestCase):
     with self.read_markdown("invalid_test_section.md") as problem_file:
       with self.assertRaises(ValueError) as context:
         parse_problem_file(problem_file)
-      self.assertIn("Test name invalid, not-bolded, or missing", str(context.exception))
+
+      self.assertIn("Problem must have at least one test", str(context.exception))
 
   def test_multiple_tests(self):
     with self.read_markdown("multiple_tests.md") as problem_file:
