@@ -68,34 +68,39 @@ class TestParseProblemFile(unittest.TestCase):
 
       self.assertIn("Problem must have at least one test", str(context.exception))
 
-  def test_multiple_tests(self):
-    with self.read_markdown("multiple_tests.md") as problem_file:
+  def test_auxiliary_section(self):
+    with self.read_markdown("valid_with_auxiliary.md") as problem_file:
+      result = parse_problem_file(problem_file)
       expected_output = {
         "header_info": {"header_key": "header_value"},
-        "title": "Complex Problem",
-        "description": "Detailed description here.",
+        "title": "Sample Problem",
+        "description": "This is a description of the sample problem.",
         "code_sections": {
-          "problem": "def multiply(a: int, b: int) -> int:\n  return a * b",
-          "truth": '{"result": 6}'
+          "auxiliary": "def helper(a: int) -> int:\n  return a * 2\n",
+          "problem": "def add(a: int, b: int) -> int:\n  return a + b\n",
+          "truth": "def add(a: int, b: int) -> int:\n  return a + b\n"
         },
-        "problem_header": "def multiply(a: int, b: int) -> int:",
+        "problem_header": "def add(a: int, b: int) -> int:",
         "parameters": [
           {"a": "int"},
           {"b": "int"}
         ],
         "tests": {
           "Test1": [
-            {"a": 2, "b": 3},
-            {"result": 6}
-          ],
-          "Test2": [
-            {"a": 4, "b": 5},
-            {"result": 20}
+            {"a": 1, "b": 2},
+            {"result": 3}
           ]
         }
       }
-      result = parse_problem_file(problem_file)
-      self.assertEqual(result, expected_output)
+
+      self.assertEqual(result['header_info'], expected_output['header_info'])
+      self.assertEqual(result['title'], expected_output['title'])
+      self.assertEqual(result['description'], expected_output['description'])
+      self.assertEqual(result['code_sections'], expected_output['code_sections'])
+      self.assertEqual(result['problem_header'], expected_output['problem_header'])
+      self.assertEqual(result['parameters'], expected_output['parameters'])
+      self.assertEqual(result['tests'], expected_output['tests'])
+
 
 if __name__ == '__main__':
   unittest.main()
