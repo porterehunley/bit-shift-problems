@@ -57,6 +57,9 @@ def parse_problem_file(problem_file):
       break
 
   header_info = yaml.safe_load(yaml_content)
+  if not header_info:
+    raise ValueError("Problem must have a header at the top of file")
+
   doc = Document(problem_file)
   renderer = ast_renderer.ASTRenderer()
   string = renderer.render(token=doc)

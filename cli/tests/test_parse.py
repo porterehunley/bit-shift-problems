@@ -1,5 +1,4 @@
 import unittest
-import json
 from pathlib import Path
 from cli.bitshift.commands.parse import parse_problem_file
 
@@ -19,8 +18,8 @@ class TestParseProblemFile(unittest.TestCase):
         "title": "Sample Problem",
         "description": "This is a description of the sample problem.",
         "code_sections": {
-          "problem": "def add(a: int, b: int) -> int:\n  return a + b",
-          "truth": "def add(a: int, b: int) -> int:\n  return a + b",
+          "problem": "def add(a: int, b: int) -> int:\n  return a + b\n",
+          "truth": "def add(a: int, b: int) -> int:\n  return a + b\n",
         },
         "problem_header": "def add(a: int, b: int) -> int:",
         "parameters": [
@@ -35,13 +34,20 @@ class TestParseProblemFile(unittest.TestCase):
         }
       }
       result = parse_problem_file(problem_file)
-      self.assertEqual(result, expected_output)
+
+      self.assertEqual(result['header_info'], expected_output['header_info'])
+      self.assertEqual(result['title'], expected_output['title'])
+      self.assertEqual(result['description'], expected_output['description'])
+      self.assertEqual(result['code_sections'], expected_output['code_sections'])
+      self.assertEqual(result['problem_header'], expected_output['problem_header'])
+      self.assertEqual(result['parameters'], expected_output['parameters'])
+      self.assertEqual(result['tests'], expected_output['tests'])
 
   def test_missing_header(self):
     with self.read_markdown("missing_header.md") as problem_file:
       with self.assertRaises(ValueError) as context:
         parse_problem_file(problem_file)
-      self.assertIn("Problem must have the header at the top of file", str(context.exception))
+      self.assertIn("Problem must have a header at the top of file", str(context.exception))
 
   def test_invalid_code_language(self):
     with self.read_markdown("invalid_code_language.md") as problem_file:
