@@ -3,13 +3,13 @@ import argparse
 from bitshift.commands.upload import upload
 from bitshift.commands.generate import generate
 from bitshift.commands.test import run_tests  # Import the run_tests function
+from bitshift.commands.deploy import deploy  # Import the run_tests function
 
 
 def parse_arguments():
   parser = argparse.ArgumentParser(description='Bitshift CLI')
   subparsers = parser.add_subparsers(dest='command', required=True, help='Available commands')
 
-  # Upload command parser
   upload_parser = subparsers.add_parser('upload', help='Upload a target')
   upload_parser.add_argument(
     'target',
@@ -17,7 +17,6 @@ def parse_arguments():
     help='The problem target to upload'
   )
 
-  # Generate command parser
   generate_parser = subparsers.add_parser('generate', help='Generate by name')
   generate_parser.add_argument(
     'title',
@@ -26,6 +25,7 @@ def parse_arguments():
   )
   
   _ = subparsers.add_parser('test', help='Run all unit tests')
+  _ = subparsers.add_parser('deploy', help='Deploy the cloud function')
 
   args = parser.parse_args()
   return args
@@ -40,6 +40,8 @@ def main():
     generate(args.title)
   elif args.command == 'test':
     run_tests()
+  elif args.command == 'deploy':
+    deploy()
   else:
     print('Invalid command')
 
