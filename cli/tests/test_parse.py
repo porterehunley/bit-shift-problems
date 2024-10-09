@@ -1,6 +1,6 @@
 import unittest
 from pathlib import Path
-from cli.bitshift.commands.parse import parse_problem_file
+from bitshift.commands.parse import parse_problem_file
 
 class TestParseProblemFile(unittest.TestCase):
   def setUp(self):

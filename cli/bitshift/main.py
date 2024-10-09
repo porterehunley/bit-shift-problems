@@ -2,6 +2,7 @@ import os
 import argparse
 from bitshift.commands.upload import upload
 from bitshift.commands.generate import generate
+from bitshift.commands.test import run_tests  # Import the run_tests function
 
 
 def parse_arguments():
@@ -23,6 +24,8 @@ def parse_arguments():
     type=str,
     help='The name for generation'
   )
+  
+  _ = subparsers.add_parser('test', help='Run all unit tests')
 
   args = parser.parse_args()
   return args
@@ -35,5 +38,11 @@ def main():
     upload(args.target)
   elif args.command == 'generate':
     generate(args.title)
+  elif args.command == 'test':
+    run_tests()
   else:
     print('Invalid command')
+
+
+if __name__ == '__main__':
+  main()
