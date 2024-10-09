@@ -66,7 +66,7 @@ def parse_problem_file(problem_file):
   ast = json.loads(string)
 
   if not ast['children'] or ast['children'][0].get('type', None) != 'Heading':
-    raise ValueError("Problem must have the header at the top of file")
+    raise ValueError("Problem must have title")
   
   title = ast['children'][0]['children'][0]['content']
   print(f'Title: {title}')
