@@ -93,9 +93,11 @@ def hello_http(request):
   print("Executing Code")
   print(code)
 
+  namespace = {} # Create a new namespace for the code to run in
+
   buffer = StringIO()
   sys.stdout = buffer
-  exec(code) # Printed code goes to buffer 
+  exec(code, namespace) # Printed code goes to buffer 
   sys.stdout = sys.__stdout__
   is_expected = buffer.getvalue().strip() == 'True' # Print the captured output```
   results.append(is_expected)
