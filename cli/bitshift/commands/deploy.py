@@ -10,7 +10,7 @@ def deploy():
   function_name = 'bitshift-test'
   region = 'northamerica-northeast1'
   runtime = 'python312'
-  source_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'cloud-functions'))
+  source_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'cloud_functions'))
 
   # Construct the gcloud command
   cmd = [
