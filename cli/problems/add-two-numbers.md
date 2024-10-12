@@ -53,7 +53,7 @@ def addTwoNumbers(l1: List[int], l2: List[int]):
 
 **Truth**
 ```python
-def addTwoNumbers(l1: List[int], l2: List[int]):
+def addTwoNumbers_truth(l1: List[int], l2: List[int]):
     l1 = list_to_linked_list(l1)
     l2 = list_to_linked_list(l2)
 
@@ -79,30 +79,30 @@ def addTwoNumbers(l1: List[int], l2: List[int]):
 ```
 
 ## Tests
-**Test Title**
+**Test One**
 ```python
 {
-    "parameter_name": "example",
-    "another_parameter": 42 
+    "l1": [2, 4, 3],
+    "l2": [5, 6, 4]
 }
 ```
 
 ```python
 {
-    "expected": [3,4]
+    "expected": [7, 0, 8]
 }
 ```
 
 **Test Two**
 ```python
 {
-    "parameter_name": "...",
-    "another_parameter": 69 
+    "l1": [0],
+    "l2": [0]
 }
 ```
 
 ```python
 {
-    "expected": [3,4]
+    "expected": [0]
 }
 ```

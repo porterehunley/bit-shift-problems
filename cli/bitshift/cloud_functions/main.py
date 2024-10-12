@@ -51,7 +51,6 @@ def hello_http(request):
     <https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response>.
   """
   request_json = request.get_json()
-  print(request_json)
   if not request_json or 'code' not in request_json:
     return 'Invalid input', 400
 

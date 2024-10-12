@@ -38,8 +38,6 @@ def validate_input_section(node):
   validate_code_section(node)
 
   code_str = node['children'][0]['content']
-  print('-----')
-  print(code_str)
   function_input = json.loads(code_str)
 
   return function_input
@@ -69,13 +67,11 @@ def parse_problem_file(problem_file):
     raise ValueError("Problem must have title")
   
   title = ast['children'][0]['children'][0]['content']
-  print(f'Title: {title}')
 
   if len(ast['children']) < 2 or ast['children'][1].get('type', None) != 'Paragraph':
     raise ValueError("Problem must have description following header")
   
   description = ast['children'][1]['children'][0]['content']
-  print(f'Description: {description}')
 
   if (len(ast['children']) < 3 or
     ast['children'][2]['type'] != 'Heading' or
@@ -129,12 +125,7 @@ def parse_problem_file(problem_file):
 
   child_idx += 2
 
-  print('Header', problem_header)
-
   parameters = parse_parameters(problem_header)
-  print('Parameters:', parameters)
-
-  print('Code', code_sections)
 
   # Now do the tests section
   if (child_idx >= len(ast['children']) or
@@ -165,7 +156,6 @@ def parse_problem_file(problem_file):
 
     child_idx += 3
 
-  print('tests', tests)
   if not tests:
     raise ValueError('Problem must have at least one test')
 
