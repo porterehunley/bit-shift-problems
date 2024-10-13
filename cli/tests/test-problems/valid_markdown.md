@@ -39,14 +39,14 @@ def add(a: int, b: int) -> int:
 **Breaking Input**
 ```python
 {
-    "a": 1,
-    "b": 2
+  "a": 1,
+  "b": 2
 }
 ```
 
-```python
+```json
 {
-  "is_breaking": True
+  "is_breaking": true
 }
 ```
 
@@ -58,8 +58,8 @@ def add(a: int, b: int) -> int:
 }
 ```
 
-```python
+```json
 {
-  "is_breaking": False
+  "is_breaking": false
 }
 ```

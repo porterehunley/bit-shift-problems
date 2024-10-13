@@ -33,14 +33,14 @@ class TestParseProblemFile(unittest.TestCase):
           ]
         },
         "tests": {
-          "Breaking Input": [
-            {"a": 1, "b": 2},
-            {"is_breaking": True}
-          ],
-          "Non-Breaking Input": [
-            {"a": 0, "b": 0},
-            {"is_breaking": False}
-          ]
+          "Breaking Input": {
+            "input": {"a": 1, "b": 2},
+            "output": {"is_breaking": True}
+          },
+          "Non-Breaking Input": {
+            "input": {"a": 0, "b": 0},
+            "output": {"is_breaking": False}
+          }
         }
       }
       result = parse_problem_file(problem_file)
@@ -77,7 +77,7 @@ class TestParseProblemFile(unittest.TestCase):
       with self.assertRaises(ValueError) as context:
         parse_problem_file(problem_file)
 
-      self.assertIn("Example name invalid, not-bolded, or missing", str(context.exception))
+      self.assertIn("Problem must have at least one example", str(context.exception))
 
   def test_auxiliary_section(self):
     with self.read_markdown("valid_with_auxiliary.md") as problem_file:

@@ -37,9 +37,10 @@ class TestRunProblems(unittest.TestCase):
       title = parsed_problem['title']
       tests = parsed_problem['tests']
       
-      for test_name, (test_input, _) in tests.items():
+      for test_name, test_vals in tests.items():
+        test_input = test_vals['input']
+        expected_output = test_vals['output']['is_breaking']
         formatted_input = self.format_test_input(parsed_problem['parameters'], test_input)
-        print(formatted_input)
         with self.subTest(problem=title, test=test_name):
           payload = {
             "header": parsed_problem['problem_header'],
@@ -62,12 +63,9 @@ class TestRunProblems(unittest.TestCase):
           request = Request(environ)
           
           response = hello_http(request)
-          print(f'{title} - {test_name}: {response}')
-          
-          # Assuming hello_http returns a tuple of (response_body, status_code)
           result = response['results'][0]
           
-          self.assertEqual(result, True, f"Failed {title} - {test_name}")
+          self.assertEqual(result, expected_output, f"Failed {title} - {test_name}")
 
 if __name__ == '__main__':
   unittest.main()

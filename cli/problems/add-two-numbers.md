@@ -118,9 +118,9 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
 }
 ```
 
-```python
+```json
 {
-    "is_breaking": True 
+    "is_breaking": true 
 }
 ```
 
@@ -132,8 +132,8 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
 }
 ```
 
-```python
+```json
 {
-    "is_breaking": False
+    "is_breaking": false
 }
 ```

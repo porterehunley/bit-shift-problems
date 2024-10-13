@@ -73,7 +73,7 @@ def searchRange_truth(nums: List[int], target: int) -> List[int]:
     return [first, last]
 ```
 
-## Tests
+## Examples
 
 **Double**
 ```python
@@ -128,5 +128,34 @@ def searchRange_truth(nums: List[int], target: int) -> List[int]:
 ```python
 {
     "expected": [0,4]
+}
+```
+
+## Tests
+**Breaking Input**
+```python
+{
+    "nums": [1,2,3,4,5,6,7,8,9,10],
+    "target": 5
+}
+```
+
+```json
+{
+    "is_breaking": true
+}
+```
+
+**Non-Breaking Input**
+```python
+{
+    "nums": [1,2,3,4,5,6,7,8,9,10],
+    "target": 21
+}
+```
+
+```json
+{
+    "is_breaking": false
 }
 ```

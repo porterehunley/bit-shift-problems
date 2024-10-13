@@ -30,9 +30,9 @@ def add(a: int, b: int) -> int:
 }
 ```
 
-```python
+```json
 {
-  "is_breaking": True
+  "is_breaking": true
 }
 ```
 
@@ -44,9 +44,9 @@ def add(a: int, b: int) -> int:
 }
 ```
 
-```python
+```json
 {
-  "is_breaking": False
+  "is_breaking": false
 }
 ```
 

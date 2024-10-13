@@ -137,7 +137,10 @@ def parse_problem_file(problem_file):
   child_idx += 1
 
   examples = {}
-  while child_idx < len(ast['children']): # Final part of problem
+  while child_idx < len(ast['children']) and not (
+      ast['children'][child_idx]['type'] == 'Heading' and 
+      ast['children'][child_idx]['level'] == 2
+  ):
     if ast['children'][child_idx]['children'][0]['type'] != 'Strong':
       raise ValueError('Example name invalid, not-bolded, or missing')
     
@@ -159,6 +162,8 @@ def parse_problem_file(problem_file):
   if not examples:
     raise ValueError('Problem must have at least one example')
   
+  child_idx += 1
+  
   # Now do the tests section
   tests = {}
   has_breaking = False
@@ -173,7 +178,7 @@ def parse_problem_file(problem_file):
     
     test_input = json.loads(ast['children'][child_idx + 1]['children'][0]['content'])
     
-    if child_idx + 2 >= len(ast['children']) or not validate_code_section(ast['children'][child_idx + 2]):
+    if child_idx + 2 >= len(ast['children']):
       raise ValueError(f'Missing or invalid output section for test {test_name}')
     
     test_output = json.loads(ast['children'][child_idx + 2]['children'][0]['content'])
