@@ -127,37 +127,37 @@ def parse_problem_file(problem_file):
 
   parameters = parse_parameters(problem_header)
 
-  # Now do the tests section
+  # Now do the examples section
   if (child_idx >= len(ast['children']) or
     ast['children'][child_idx]['type'] != 'Heading' or 
     ast['children'][child_idx]['level'] != 2 or 
-    ast['children'][child_idx]['children'][0]['content'] != 'Tests'):
-    raise ValueError('Problem must have a valid Tests section following variants')
+    ast['children'][child_idx]['children'][0]['content'] != 'Examples'):
+    raise ValueError('Problem must have a valid Examples section following variants')
   
   child_idx += 1
 
-  tests = {}
+  examples = {}
   while child_idx < len(ast['children']): # Final part of problem
     if ast['children'][child_idx]['children'][0]['type'] != 'Strong':
-      raise ValueError('Test name invalid, not-bolded, or missing')
+      raise ValueError('Example name invalid, not-bolded, or missing')
     
-    test_name = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    example_name = ast['children'][child_idx]['children'][0]['children'][0]['content']
     if child_idx+1 >= len(ast['children']) or not validate_input_section(ast['children'][child_idx+1]):
-      raise ValueError(f'Missing or invalid input section for test {test_name}')
+      raise ValueError(f'Missing or invalid input section for example {example_name}')
     
-    test_input = json.loads(ast['children'][child_idx+1]['children'][0]['content'])
+    example_input = json.loads(ast['children'][child_idx+1]['children'][0]['content'])
 
     if child_idx+2 >= len(ast['children']) or not validate_code_section(ast['children'][child_idx+2]):
-      raise ValueError(f'Missing or invalid output section for test {test_name}')
+      raise ValueError(f'Missing or invalid output section for example {example_name}')
     
-    test_output = json.loads(ast['children'][child_idx+2]['children'][0]['content'])
+    example_output = json.loads(ast['children'][child_idx+2]['children'][0]['content'])
 
-    tests[test_name] = [test_input, test_output]
+    examples[example_name] = [example_input, example_output]
 
     child_idx += 3
 
-  if not tests:
-    raise ValueError('Problem must have at least one test')
+  if not examples:
+    raise ValueError('Problem must have at least one example')
 
   return {
     "header_info": header_info,
@@ -166,5 +166,5 @@ def parse_problem_file(problem_file):
     "code_sections": code_sections,
     "problem_header": problem_header,
     "parameters": parameters,
-    "tests": tests
+    "examples": examples
   }

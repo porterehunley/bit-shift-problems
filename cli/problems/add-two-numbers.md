@@ -80,7 +80,7 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
     return dummy_head.next
 ```
 
-## Tests
+## Examples
 **Test One**
 ```python
 {

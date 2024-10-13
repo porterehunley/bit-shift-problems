@@ -26,7 +26,7 @@ class TestParseProblemFile(unittest.TestCase):
           {"a": "int"},
           {"b": "int"}
         ],
-        "tests": {
+        "examples": {
           "Test1": [
             {"a": 1, "b": 2},
             {"result": 3}
@@ -41,7 +41,7 @@ class TestParseProblemFile(unittest.TestCase):
       self.assertEqual(result['code_sections'], expected_output['code_sections'])
       self.assertEqual(result['problem_header'], expected_output['problem_header'])
       self.assertEqual(result['parameters'], expected_output['parameters'])
-      self.assertEqual(result['tests'], expected_output['tests'])
+      self.assertEqual(result['examples'], expected_output['examples'])
 
   def test_missing_header(self):
     with self.read_markdown("missing_header.md") as problem_file:
@@ -66,7 +66,7 @@ class TestParseProblemFile(unittest.TestCase):
       with self.assertRaises(ValueError) as context:
         parse_problem_file(problem_file)
 
-      self.assertIn("Problem must have at least one test", str(context.exception))
+      self.assertIn("Problem must have at least one example", str(context.exception))
 
   def test_auxiliary_section(self):
     with self.read_markdown("valid_with_auxiliary.md") as problem_file:
@@ -85,7 +85,7 @@ class TestParseProblemFile(unittest.TestCase):
           {"a": "int"},
           {"b": "int"}
         ],
-        "tests": {
+        "examples": {
           "Test1": [
             {"a": 1, "b": 2},
             {"result": 3}
@@ -99,7 +99,7 @@ class TestParseProblemFile(unittest.TestCase):
       self.assertEqual(result['code_sections'], expected_output['code_sections'])
       self.assertEqual(result['problem_header'], expected_output['problem_header'])
       self.assertEqual(result['parameters'], expected_output['parameters'])
-      self.assertEqual(result['tests'], expected_output['tests'])
+      self.assertEqual(result['examples'], expected_output['examples'])
 
 
 if __name__ == '__main__':

@@ -20,8 +20,8 @@ def solution_function():
     pass # Implement your working solution here
 ```
 
-## Tests
-**Test Title**
+## Examples
+**Example Title**
 ```python
 {
     "parameter_name": "example",
@@ -29,7 +29,7 @@ def solution_function():
 }
 ```
 
-**Test Two**
+**Example Two**
 ```python
 {
     "parameter_name": "...",
