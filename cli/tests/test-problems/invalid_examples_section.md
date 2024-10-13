@@ -21,3 +21,33 @@ def add(a: int, b: int) -> int:
 
 ## Examples
 
+## Tests
+**Breaking Input**
+```python
+{
+    "a": 1,
+    "b": 2
+}
+```
+
+```python
+{
+  "is_breaking": True
+}
+```
+
+**Non-Breaking Input**
+```python
+{
+  "a": 0,
+  "b": 0
+}
+```
+
+```python
+{
+  "is_breaking": False
+}
+```
+
+

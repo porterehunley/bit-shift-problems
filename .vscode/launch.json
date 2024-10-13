@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Unittest",
+      "type": "python",
+      "request": "launch",
+      "program": "-m",
+      "console": "integratedTerminal",
+      "args": [
+        "-v",
+        "unittest",
+        "cli/tests/test_parse.py"
+      ],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

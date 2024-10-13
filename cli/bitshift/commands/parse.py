@@ -158,6 +158,42 @@ def parse_problem_file(problem_file):
 
   if not examples:
     raise ValueError('Problem must have at least one example')
+  
+  # Now do the tests section
+  tests = {}
+  has_breaking = False
+  has_non_breaking = False
+  while child_idx < len(ast['children']):
+    if ast['children'][child_idx]['children'][0]['type'] != 'Strong':
+      raise ValueError('Test name invalid, not-bolded, or missing')
+    
+    test_name = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    if child_idx + 1 >= len(ast['children']) or not validate_input_section(ast['children'][child_idx + 1]):
+      raise ValueError(f'Missing or invalid input section for test {test_name}')
+    
+    test_input = json.loads(ast['children'][child_idx + 1]['children'][0]['content'])
+    
+    if child_idx + 2 >= len(ast['children']) or not validate_code_section(ast['children'][child_idx + 2]):
+      raise ValueError(f'Missing or invalid output section for test {test_name}')
+    
+    test_output = json.loads(ast['children'][child_idx + 2]['children'][0]['content'])
+    
+    tests[test_name] = {
+      "input": test_input,
+      "output": test_output
+    }
+    
+    if test_output.get('is_breaking', False):
+      has_breaking = True
+    else:
+      has_non_breaking = True
+    
+    child_idx += 3
+  
+  if not has_breaking:
+    raise ValueError('Tests must include at least one breaking input')
+  if not has_non_breaking:
+    raise ValueError('Tests must include at least one non-breaking input')
 
   return {
     "header_info": header_info,
@@ -165,6 +201,7 @@ def parse_problem_file(problem_file):
     "description": description,
     "code_sections": code_sections,
     "problem_header": problem_header,
+    "tests": tests,
     "parameters": parameters,
     "examples": examples
   }

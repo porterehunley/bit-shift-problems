@@ -108,3 +108,32 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
     "expected": [0]
 }
 ```
+
+## Tests
+**Breaking Input**
+```python
+{
+    "l1": [2, 4, 3],
+    "l2": [5, 6, 4]
+}
+```
+
+```python
+{
+    "is_breaking": True 
+}
+```
+
+**Non-Breaking Input**
+```python
+{
+    "l1": [0],
+    "l2": [0]
+}
+```
+
+```python
+{
+    "is_breaking": False
+}
+```

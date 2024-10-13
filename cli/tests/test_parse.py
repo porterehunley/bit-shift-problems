@@ -31,6 +31,16 @@ class TestParseProblemFile(unittest.TestCase):
             {"a": 1, "b": 2},
             {"result": 3}
           ]
+        },
+        "tests": {
+          "Breaking Input": [
+            {"a": 1, "b": 2},
+            {"is_breaking": True}
+          ],
+          "Non-Breaking Input": [
+            {"a": 0, "b": 0},
+            {"is_breaking": False}
+          ]
         }
       }
       result = parse_problem_file(problem_file)
@@ -42,6 +52,7 @@ class TestParseProblemFile(unittest.TestCase):
       self.assertEqual(result['problem_header'], expected_output['problem_header'])
       self.assertEqual(result['parameters'], expected_output['parameters'])
       self.assertEqual(result['examples'], expected_output['examples'])
+      self.assertEqual(result['tests'], expected_output['tests'])
 
   def test_missing_header(self):
     with self.read_markdown("missing_header.md") as problem_file:
@@ -61,12 +72,12 @@ class TestParseProblemFile(unittest.TestCase):
         parse_problem_file(problem_file)
       self.assertIn("Failed to parse truth section", str(context.exception))
 
-  def test_invalid_test_section(self):
-    with self.read_markdown("invalid_test_section.md") as problem_file:
+  def test_invalid_examples_section(self):
+    with self.read_markdown("invalid_examples_section.md") as problem_file:
       with self.assertRaises(ValueError) as context:
         parse_problem_file(problem_file)
 
-      self.assertIn("Problem must have at least one example", str(context.exception))
+      self.assertIn("Example name invalid, not-bolded, or missing", str(context.exception))
 
   def test_auxiliary_section(self):
     with self.read_markdown("valid_with_auxiliary.md") as problem_file:
