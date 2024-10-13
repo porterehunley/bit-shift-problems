@@ -8,6 +8,11 @@ Given the root of a binary tree and an integer targetSum, return all root-to-lea
 
 ## Code
 
+**Auxiliary**
+```python
+from typing import List
+```
+
 **Problem**
 ```python
 def searchRange(nums: List[int], target: int) -> List[int]:

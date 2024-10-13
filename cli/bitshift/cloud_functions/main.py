@@ -1,5 +1,4 @@
 import functions_framework
-from typing import List
 from io import StringIO
 import sys
 
@@ -75,8 +74,6 @@ def hello_http(request):
 
   code = ''
   if ('auxiliary' in request_json):
-    print('Adding Auxiliary')
-    print(request_json['auxiliary'])
     code += request_json['auxiliary']
     code += '\n'
   
@@ -88,9 +85,6 @@ def hello_http(request):
   code += f'\nexpected={truth_name}(**test)'
   code += f'\nis_expected= output == expected'
   code += '\nprint(is_expected)'
-
-  print("Executing Code")
-  print(code)
 
   namespace = {} # Create a new namespace for the code to run in
 

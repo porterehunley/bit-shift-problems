@@ -10,6 +10,8 @@ You are given two non-empty linked lists representing two non-negative integers.
 
 **Auxiliary**
 ```python
+from typing import List
+
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val

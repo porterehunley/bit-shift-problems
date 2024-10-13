@@ -12,12 +12,17 @@ class TestRunProblems(unittest.TestCase):
     self.directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'problems'))
     self.parser = parse_problem_file
 
+  def convert_to_string(self, value):
+    if isinstance(value, list):
+      return ','.join(map(str, value))
+    return str(value)
+
   def format_test_input(self, parameters, test_input):
     formatted_input = {}
     for param in parameters:
-        name, param_type = next(iter(param.items()))
-        value = test_input.get(name)
-        formatted_input[name] = [param_type, str(value)]
+      name, param_type = next(iter(param.items()))
+      value = test_input.get(name)
+      formatted_input[name] = [param_type, self.convert_to_string(value)]
     return formatted_input
 
   def test_run_all_problems(self):
@@ -62,7 +67,7 @@ class TestRunProblems(unittest.TestCase):
           # Assuming hello_http returns a tuple of (response_body, status_code)
           result = response['results'][0]
           
-          self.assertEqual(result, True, f"Failed {title} - {test_name}: HTTP {status_code}")
+          self.assertEqual(result, True, f"Failed {title} - {test_name}")
 
 if __name__ == '__main__':
   unittest.main()
