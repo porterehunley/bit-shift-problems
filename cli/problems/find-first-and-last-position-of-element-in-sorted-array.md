@@ -135,14 +135,14 @@ def searchRange_truth(nums: List[int], target: int) -> List[int]:
 **Breaking Input**
 ```python
 {
-    "nums": [1,2,3,4,5,6,7,8,9,10],
-    "target": 5
+    "nums": [1],
+    "target": 1
 }
 ```
 
 ```json
 {
-    "is_breaking": true
+    "is_breaking": true 
 }
 ```
 
@@ -156,6 +156,6 @@ def searchRange_truth(nums: List[int], target: int) -> List[int]:
 
 ```json
 {
-    "is_breaking": false
+    "is_breaking": false 
 }
 ```

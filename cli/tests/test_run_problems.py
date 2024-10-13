@@ -65,7 +65,7 @@ class TestRunProblems(unittest.TestCase):
           response = hello_http(request)
           result = response['results'][0]
           
-          self.assertEqual(result, expected_output, f"Failed {title} - {test_name}")
+          self.assertEqual(result, not expected_output, f"Failed {title} - {test_name}")
 
 if __name__ == '__main__':
   unittest.main()

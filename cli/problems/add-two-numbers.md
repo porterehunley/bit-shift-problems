@@ -24,6 +24,13 @@ def list_to_linked_list(lst: List[int]) -> ListNode:
         current.next = ListNode(val)
         current = current.next
     return dummy.next
+
+def linked_list_to_list(node: ListNode) -> List[int]:
+    lst = []
+    while node:
+        lst.append(node.val)
+        node = node.next
+    return lst
 ```
 
 **Problem**
@@ -50,7 +57,7 @@ def addTwoNumbers(l1: List[int], l2: List[int]):
         if l2:
             l2 = l2.next
     
-    return dummy_head.next
+    return linked_list_to_list(dummy_head.next)
 ```
 
 **Truth**
@@ -63,7 +70,7 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
     current = dummy_head
     carry = 0
     
-    while l1 or l2:
+    while l1 or l2 or carry:
         x = l1.val if l1 else 0
         y = l2.val if l2 else 0
         
@@ -77,7 +84,7 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
         if l2:
             l2 = l2.next
     
-    return dummy_head.next
+    return linked_list_to_list(dummy_head.next)
 ```
 
 ## Examples
@@ -113,8 +120,8 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
 **Breaking Input**
 ```python
 {
-    "l1": [2, 4, 3],
-    "l2": [5, 6, 4]
+    "l1": [9,9,9,9,9,9,9],
+    "l2": [9,9,9,9]
 }
 ```
 
@@ -127,8 +134,8 @@ def addTwoNumbers_truth(l1: List[int], l2: List[int]):
 **Non-Breaking Input**
 ```python
 {
-    "l1": [0],
-    "l2": [0]
+    "l1": [2,4,3],
+    "l2": [5,6,4]
 }
 ```
 

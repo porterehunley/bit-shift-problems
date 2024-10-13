@@ -86,6 +86,8 @@ def hello_http(request):
   code += f'\nis_expected= output == expected'
   code += '\nprint(is_expected)'
 
+  print(code)
+
   namespace = {} # Create a new namespace for the code to run in
 
   buffer = StringIO()
