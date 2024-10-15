@@ -20,6 +20,7 @@ def upload(problem_file):
   code_sections = parsed_data['code_sections']
   problem_header = parsed_data['problem_header']
   parameters = parsed_data['parameters']
+  examples = parsed_data['examples']
   tests = parsed_data['tests']
 
   title_postfixes = random.sample(['1', '2'], 2)
@@ -42,14 +43,14 @@ def upload(problem_file):
 
   doc_ref.set(upload_data)
 
-  for test_name in tests.keys():
-    tests_ref = db.collection('problems').document(f'{title.replace(" ","_")}').collection('tests').document(test_name)
-    tests_ref.set({
-      "input": tests[test_name][0],
-      "output": tests[test_name][1]
+  for example_name in examples.keys():
+    examples_ref = db.collection('problems').document(f'{title_one.replace(" ","_")}').collection('examples').document(example_name)
+    examples_ref.set({
+      "input": examples[example_name][0],
+      "output": examples[example_name][1]
     })
 
-  print("Tests uploaded")
+  print("Examples uploaded")
 
   variant_title = f"{title}-{title_postfixes[-1]}"
   variant_doc_ref = db.collection('problems').document(f'{variant_title.replace(" ","_")}')
@@ -70,12 +71,12 @@ def upload(problem_file):
 
   variant_doc_ref.set(variant_upload_data)
 
-  for test_name in tests.keys():
-    tests_ref = db.collection('problems').document(f'{variant_title.replace(" ","_")}').collection('tests').document(test_name)
-    tests_ref.set({
-      "input": tests[test_name][0],
-      "output": tests[test_name][1]
+  for example_name in examples.keys():
+    examples_ref = db.collection('problems').document(f'{variant_title.replace(" ","_")}').collection('examples').document(example_name)
+    examples_ref.set({
+      "input": examples[example_name][0],
+      "output": examples[example_name][1]
     })
 
-  print("Tests uploaded")
+  print("Examples uploaded")
   print("Truth uploaded")
