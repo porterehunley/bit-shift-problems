@@ -11,7 +11,7 @@ class TestHelloHttpFunction(unittest.TestCase):
   def test_hello_http_with_auxiliary(self):
     payload = {
       "header": "def multiply(a, b):",
-      "truth": "def multiply_truth(a, b): return a * b",
+      "truth": "def multiply(a, b): return a * b",
       "input": {
         "a": ["int", "4"],
         "b": ["int", "5"]
@@ -38,7 +38,7 @@ class TestHelloHttpFunction(unittest.TestCase):
   def test_hello_http_valid_input(self):
     payload = {
       "header": "def add(a, b):",
-      "truth": "def add_truth(a, b): return a + b",
+      "truth": "def add(a, b): return a + b",
       "input": {
         "a": ["int", "2"],
         "b": ["int", "3"]

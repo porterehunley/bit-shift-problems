@@ -42,7 +42,7 @@ def searchRange(nums: List[int], target: int) -> List[int]:
 
 **Truth**
 ```python
-def searchRange_truth(nums: List[int], target: int) -> List[int]:
+def searchRange(nums: List[int], target: int) -> List[int]:
     start = 0
     end = len(nums) - 1
     while (start < end):

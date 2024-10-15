@@ -81,7 +81,8 @@ def hello_http(request):
   code += f'\ntest={user_input}'
   code += f'\noutput={function_name}(**test)'
   code += '\n'
-  code += truth_code
+  truth_code_modified = truth_code.replace(f'def {function_name}', f'def {truth_name}')
+  code += truth_code_modified
   code += f'\nexpected={truth_name}(**test)'
   code += f'\nis_expected= output == expected'
   code += '\nprint(is_expected)'

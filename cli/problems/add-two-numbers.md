@@ -62,7 +62,7 @@ def addTwoNumbers(l1: List[int], l2: List[int]):
 
 **Truth**
 ```python
-def addTwoNumbers_truth(l1: List[int], l2: List[int]):
+def addTwoNumbers(l1: List[int], l2: List[int]):
     l1 = list_to_linked_list(l1)
     l2 = list_to_linked_list(l2)
 
