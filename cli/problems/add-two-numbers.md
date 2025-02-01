@@ -16,29 +16,11 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
-
-def list_to_linked_list(lst: List[int]) -> ListNode:
-    dummy = ListNode(0)
-    current = dummy
-    for val in lst:
-        current.next = ListNode(val)
-        current = current.next
-    return dummy.next
-
-def linked_list_to_list(node: ListNode) -> List[int]:
-    lst = []
-    while node:
-        lst.append(node.val)
-        node = node.next
-    return lst
 ```
 
 **Problem**
 ```python
-def addTwoNumbers(l1: List[int], l2: List[int]):
-    l1 = list_to_linked_list(l1)
-    l2 = list_to_linked_list(l2)
-
+def addTwoNumbers(h1: ListNode, h2: ListNode):
     dummy_head = ListNode(0)
     current = dummy_head
     carry = 0
@@ -57,15 +39,12 @@ def addTwoNumbers(l1: List[int], l2: List[int]):
         if l2:
             l2 = l2.next
     
-    return linked_list_to_list(dummy_head.next)
+    return dummy_head.next
 ```
 
 **Truth**
 ```python
-def addTwoNumbers(l1: List[int], l2: List[int]):
-    l1 = list_to_linked_list(l1)
-    l2 = list_to_linked_list(l2)
-
+def addTwoNumbers(h1: ListNode, h2: ListNode):
     dummy_head = ListNode(0)
     current = dummy_head
     carry = 0
@@ -84,7 +63,7 @@ def addTwoNumbers(l1: List[int], l2: List[int]):
         if l2:
             l2 = l2.next
     
-    return linked_list_to_list(dummy_head.next)
+    return dummy_head.next
 ```
 
 ## Examples
