@@ -5,6 +5,7 @@ from bitshift.commands.generate import generate
 from bitshift.commands.test import run_tests  # Import the run_tests function
 from bitshift.commands.deploy import deploy  # Import the run_tests function
 from bitshift.commands.parse import parse_problem_file
+from bitshift.commands.run import run_problem_tests
 
 
 def parse_arguments():
@@ -27,6 +28,8 @@ def parse_arguments():
   
   _ = subparsers.add_parser('test', help='Run all CLI unit tests')
   _ = subparsers.add_parser('deploy', help='Deploy the running cloud function (admin)')
+  run_parser = subparsers.add_parser('run', help='Run problems from a given directory')
+  run_parser.add_argument('directory', type=str, help='Directory containing problem .md files')
   parse_parser = subparsers.add_parser('parse', help='Try and parse a problem file and output its parsed JSON')
   parse_parser.add_argument('problem_file', type=lambda x: argparse.FileType('r')(os.path.abspath(x)), help='The problem file to parse')
 
@@ -57,6 +60,8 @@ def main():
     run_tests()
   elif args.command == 'deploy':
     deploy()
+  elif args.command == 'run':
+    run_problem_tests(args.directory)
   else:
     print('Invalid command')
 
