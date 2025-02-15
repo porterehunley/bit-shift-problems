@@ -17,10 +17,8 @@ def generate_markdown(title):
   
   slug = slugify(title)
   file_name = f"{slug}.md"
-  file_path = Path("problems") / file_name
+  file_path = Path.cwd() / file_name
 
-  Path("problems").mkdir(parents=True, exist_ok=True)
-  
   shutil.copyfile(TEMPLATE_PATH, file_path)
   
   with open(file_path, 'r', encoding='utf-8') as file:
