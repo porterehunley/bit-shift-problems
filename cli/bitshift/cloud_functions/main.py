@@ -2,10 +2,32 @@ import functions_framework
 from io import StringIO
 import sys
 
+class ListNode:
+  def __init__(self, val=0, next=None):
+    self.val = val
+    self.next = next
+
+
 def validate_input(input_type, input_value):
   if input_type == "List[int]":
     try:
       values = list(map(int, input_value.split(',')))
+      return values
+
+    except ValueError:
+      return False
+
+  elif input_type == "ListNode":
+    try:
+      values = list(map(int, input_value.split(',')))
+      if not values:
+        return None
+
+      head = ListNode(values[0])
+      current = head
+      for val in values[1:]:
+        current.next = ListNode(val)
+        current = current.next
       return values
 
     except ValueError:
