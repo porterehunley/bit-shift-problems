@@ -4,13 +4,13 @@ import json
 import random
 
 from mistletoe import Document, ast_renderer
-from bitshift.credentials import app, db
-from firebase_admin import firestore 
+from bitshift.credentials import get_db
 from typing import List, Tuple
 
 from .parse import parse_problem_file  # Import the parsing function
 
 def upload(problem_file):
+  db = get_db()
   # Parse the problem file using the parse_problem_file function
   parsed_data = parse_problem_file(problem_file)
 
