@@ -62,6 +62,7 @@ def upload(problem_file):
     "header": problem_header,
     "tags": header_info['tags'],
     "difficulty": header_info['difficulty'],
+    "creator": header_info['creator'],
     "title": variant_title,
     "parameters": parameters
   }
