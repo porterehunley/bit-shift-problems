@@ -1,6 +1,7 @@
 ---
 tags: [binary search]
 difficulty: Medium
+creator: porterehunley
 ---
 
 # Find First and Last Position of Element in Sorted Array
