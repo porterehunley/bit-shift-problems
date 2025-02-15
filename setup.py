@@ -18,9 +18,11 @@ setup(
     classifiers=[
         'Programming Language :: Python :: 3',
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.9',
     install_requires=[
         'mistletoe',
+        'functions-framework',
+        'Flask>=2.2.1'
     ],
     extras_require={
       "admin": ["firebase_admin"],
