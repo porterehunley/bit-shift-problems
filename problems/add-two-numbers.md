@@ -9,6 +9,17 @@ You are given two non-empty linked lists representing two non-negative integers.
 
 ## Code
 
+**Input Validation**
+```python
+def input_validation(l1, l2):
+    if len(l1) == 0:
+        return "l1 must not be empty"
+    if len(l2) == 0:
+        return "l2 must not be empty"
+
+    return True
+```
+
 **Auxiliary**
 ```python
 from typing import List

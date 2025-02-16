@@ -51,6 +51,9 @@ def run_problem_tests(problem_directory):
             }
             if 'auxiliary' in parsed_problem.get('code_sections', {}):
                 payload['auxiliary'] = parsed_problem.get('code_sections', {}).get('auxiliary')
+
+            if 'input_validation' in parsed_problem.get('code_sections', {}):
+                payload['input_validation'] = parsed_problem.get('code_sections', {}).get('input_validation')
             
             payload_bytes = json.dumps(payload).encode('utf-8')
             environ = {

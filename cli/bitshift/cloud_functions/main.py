@@ -56,6 +56,28 @@ def hello_http(request):
   heading = request_json['header']
   truth_code = request_json['truth']
   user_input = validate_inputs(request_json['input'])
+  if 'input_validation' in request_json:
+    input_validation_function = request_json['input_validation']
+    input_validation_name = input_validation_function.split('def ')[1].split('(')[0]
+    input_validation_code = input_validation_function
+    input_validation_code += '\n'
+    input_validation_code += f'test={user_input}'
+    input_validation_code += '\n'
+    input_validation_code += f'output={input_validation_name}(**test)'
+    input_validation_code += '\n'
+    input_validation_code += 'print(output)'
+
+    namespace = {}
+    buffer = StringIO()
+    sys.stdout = buffer
+    exec(input_validation_code, namespace)
+    sys.stdout = sys.__stdout__
+    validation_output = buffer.getvalue().strip()
+    is_valid = validation_output == 'True'
+    if not is_valid:
+      return {"results": {
+        "input_failed_validation": validation_output
+      }}
 
   parse_errors = []
   for name, value in user_input.items():
