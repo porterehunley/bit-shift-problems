@@ -109,13 +109,13 @@ def hello_http(request):
   code += f'\nis_expected= output == expected'
   code += '\nprint(is_expected)'
 
-  namespace = {} # Create a new namespace for the code to run in
+  namespace = {}
 
   buffer = StringIO()
   sys.stdout = buffer
-  exec(code, namespace) # Printed code goes to buffer 
+  exec(code, namespace)
   sys.stdout = sys.__stdout__
-  is_expected = buffer.getvalue().strip() == 'True' # Print the captured output```
+  is_expected = buffer.getvalue().strip() == 'True'
   results.append(is_expected)
 
   return {"results": results}
