@@ -112,6 +112,38 @@ class TestParseProblemFile(unittest.TestCase):
       self.assertEqual(result['parameters'], expected_output['parameters'])
       self.assertEqual(result['examples'], expected_output['examples'])
 
+  def test_input_validation_section(self):
+    with self.read_markdown("valid_with_input_validation.md") as problem_file:
+      result = parse_problem_file(problem_file)
+      expected_output = {
+        "header_info": {"header_key": "header_value"},
+        "title": "Sample Problem",
+        "description": "This is a description of the sample problem.",
+        "code_sections": {
+          "input_validation": "def input_validation():\n  pass\n",
+          "problem": "def add(a: int, b: int) -> int:\n  return a + b\n",
+          "truth": "def add(a: int, b: int) -> int:\n  return a + b\n"
+        },
+        "problem_header": "def add(a: int, b: int) -> int:",
+        "parameters": [
+          {"a": "int"},
+          {"b": "int"}
+        ],
+        "examples": {
+          "Test1": [
+            {"a": 1, "b": 2},
+            {"result": 3}
+          ]
+        }
+      }
+
+      self.assertEqual(result['header_info'], expected_output['header_info'])
+      self.assertEqual(result['title'], expected_output['title'])
+      self.assertEqual(result['description'], expected_output['description'])
+      self.assertEqual(result['code_sections'], expected_output['code_sections'])
+      self.assertEqual(result['problem_header'], expected_output['problem_header'])
+      self.assertEqual(result['parameters'], expected_output['parameters'])
+      self.assertEqual(result['examples'], expected_output['examples'])
 
 if __name__ == '__main__':
   unittest.main()

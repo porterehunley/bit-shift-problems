@@ -23,7 +23,7 @@ def parse_parameters(header: str) -> List[Tuple[str, str]]:
 def is_code_section(node):
   return (node['type'] == 'Paragraph' and 
       node['children'][0]['type'] == 'Strong' and
-      node['children'][0]['children'][0]['content'] in ['Problem', 'Truth', 'Auxiliary'])
+      node['children'][0]['children'][0]['content'] in ['Problem', 'Truth', 'Auxiliary', 'Input Validation'])
 
 def validate_code_section(node):
   if node['type'] != 'CodeFence':
@@ -82,6 +82,16 @@ def parse_problem_file(problem_file):
   child_idx = 3
   code_sections = {}
   problem_header = None
+  # Input Validation section
+  if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
+    code_section_type = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    if code_section_type == 'Input Validation':
+      if validate_code_section(ast['children'][child_idx+1]):
+        code = ast['children'][child_idx+1]['children'][0]['content']
+        code_sections['input_validation'] = code
+        child_idx += 2
+      else:
+        raise ValueError("Invalid Input Validation code section")
 
   # Auxiliary section
   if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
