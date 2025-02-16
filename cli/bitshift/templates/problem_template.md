@@ -9,6 +9,12 @@ creator: torvalds
 
 ## Code
 
+**Input Validation**
+```python
+def input_validation():
+    pass
+```
+
 **Auxiliary**
 ```python
 def auxiliary_function():
