@@ -9,43 +9,109 @@ Given n pairs of parentheses, write a function to generate all combinations of w
 
 ## Code
 
+**Input Validation**
+```python
+def input_validation(n):
+    if n < 1 or n > 7:
+        return "n must be between 1 and 7"
+    return True
+```
+
+**Auxiliary**
+```python
+from typing import Set
+```
+
 **Problem**
 ```python
-def generateParenthesis(n: int) -> List[str]:
+def generateParenthesis(n: int) -> Set[str]:
     # n is between 1 and 7
     if n == 1:
-        return ["()"]
+        return {"()"}
 
     curr_parens = generateParenthesis(n-1)
     new_parens = []
-    for parens in curr_parens:
-        new_parens.append('()' + parens)
-        if new_parens[-1] != parens + '()':
-            new_parens.append(parens+'()')
-        new_parens.append('(' + parens + ')')
+    for p in curr_parens:
+        new_parens.append('()' + p)
+        if new_parens[-1] != p + '()':
+            new_parens.append(p + '()')
+        new_parens.append('(' + p + ')')
 
-    return new_parens
+    return set(new_parens)
 ```
 
 **Truth**
 ```python
-def solution_function():
-    pass # Implement your working solution here
+def generateParenthesis(n):
+    if n == 1:
+        return {'()'}
+
+    past = generateParenthesis(n-1)
+    new_parens = set()
+    for p in past:
+        for i in range(len(p)):
+            for j in range(i, len(p)):
+                new_parens.add(
+                    p[0:i] +
+                    '(' +
+                    p[i:j] +
+                    ')' +
+                    p[j:]
+                )
+
+    return set(new_parens)
 ```
 
 ## Examples
-**Example Title**
+**Example One**
 ```python
 {
-    "parameter_name": "example",
-    "another_parameter": 42 
+    "n": 1
+}
+```
+
+```python
+{
+    "expected": ["()"]
 }
 ```
 
 **Example Two**
 ```python
 {
-    "parameter_name": "...",
-    "another_parameter": 69 
+    "n": 3
+}
+```
+
+```python
+{
+    "expected": ["((()))","(()())","(())()","()(())","()()()"]
+}
+```
+
+## Tests
+**Non-Breaking Input**
+```python
+{
+    "n": 3
+}
+```
+
+```json
+{
+    "is_breaking": false 
+}
+```
+
+**Breaking Input**
+```python
+{
+    "n": 4
+}
+```
+
+```json
+{
+    "is_breaking": true 
 }
 ```
