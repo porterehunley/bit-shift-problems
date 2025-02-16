@@ -9,6 +9,12 @@ creator: torvalds
 
 ## Code
 
+**Auxiliary**
+```python
+def auxiliary_function():
+    pass
+```
+
 **Problem**
 ```python
 def solution_function():
