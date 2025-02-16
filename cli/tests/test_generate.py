@@ -14,6 +14,7 @@ class TestGenerateCommand(unittest.TestCase):
     
     # Paths
     self.templates_dir = Path(self.test_dir) / "cli" / "bitshift" / "templates"
+    # The problems directory is part of the old structure; generate now writes to cwd.
     self.problems_dir = Path(self.test_dir) / "problems"
     self.templates_dir.mkdir(parents=True, exist_ok=True)
     self.problems_dir.mkdir(parents=True, exist_ok=True)
@@ -45,9 +46,9 @@ class TestGenerateCommand(unittest.TestCase):
     # Define the input name
     name = "Sample Problem"
 
-    # Expected slug and file path
+    # Expected slug and file path in the cwd now
     expected_slug = "sample-problem"
-    expected_file = self.problems_dir / f"{expected_slug}.md"
+    expected_file = Path(self.test_dir) / f"{expected_slug}.md"
 
     # Call the generate function
     generate(name)
@@ -63,24 +64,24 @@ class TestGenerateCommand(unittest.TestCase):
     expected_content = f"# {name}\n\nProblem description goes here."
     self.assertEqual(content, expected_content, "The content of the markdown file is incorrect.")
 
-  def test_generate_creates_problems_directory_if_not_exists(self):
-    # Remove the problems directory
-    shutil.rmtree(self.problems_dir)
-    self.assertFalse(self.problems_dir.exists(), "Problems directory still exists.")
+  def test_generate_creates_markdown_file_in_cwd_even_if_problems_directory_does_not_exist(self):
+    # Remove the problems directory if it exists.
+    if self.problems_dir.exists():
+      shutil.rmtree(self.problems_dir)
+    self.assertFalse(self.problems_dir.exists(), "Problems directory still exists (it is not used in cwd-based generation).")
 
     # Define the input name
     name = "Another Sample Problem"
 
+    # Expected slug and file path in the cwd now
+    expected_slug = "another-sample-problem"
+    expected_file = Path(self.test_dir) / f"{expected_slug}.md"
+
     # Call the generate function
     generate(name)
 
-    # Check if the problems directory was recreated
-    self.assertTrue(self.problems_dir.exists(), "Problems directory was not created.")
-
-    # Check if the file was created
-    expected_slug = "another-sample-problem"
-    expected_file = self.problems_dir / f"{expected_slug}.md"
-    self.assertTrue(expected_file.exists(), f"The file {expected_file} was not created.")
+    # Check if the file was created in the cwd
+    self.assertTrue(expected_file.exists(), f"The file {expected_file} was not created in cwd.")
 
   def test_slugify_generates_correct_slug(self):
     # Assuming slugify is a separate function, we can test it directly

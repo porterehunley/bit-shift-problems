@@ -41,6 +41,9 @@ def upload(problem_file):
   if 'auxiliary' in code_sections:
     upload_data["auxiliary"] = code_sections['auxiliary']
 
+  if 'input_validation' in code_sections:
+    upload_data["input_validation"] = code_sections['input_validation']
+
   doc_ref.set(upload_data)
 
   for example_name in examples.keys():
@@ -69,6 +72,9 @@ def upload(problem_file):
 
   if 'auxiliary' in code_sections:
     variant_upload_data["auxiliary"] = code_sections['auxiliary']
+
+  if 'input_validation' in code_sections:
+    variant_upload_data["input_validation"] = code_sections['input_validation']
 
   variant_doc_ref.set(variant_upload_data)
 
