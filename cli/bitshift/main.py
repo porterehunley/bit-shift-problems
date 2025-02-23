@@ -28,8 +28,8 @@ def parse_arguments():
   
   _ = subparsers.add_parser('test', help='Run all CLI unit tests')
   _ = subparsers.add_parser('deploy', help='Deploy the running cloud function (admin)')
-  run_parser = subparsers.add_parser('run', help='Run the tests for all problems in a given directory')
-  run_parser.add_argument('directory', type=str, help='Directory containing problem .md files')
+  run_parser = subparsers.add_parser('run', help='Run the tests for problem files in a given directory or a single problem file')
+  run_parser.add_argument('path', type=str, help='Path containing problem .md files or a single problem file')
   parse_parser = subparsers.add_parser('parse', help='Try and parse a problem file and output its parsed JSON')
   parse_parser.add_argument('problem_file', type=lambda x: argparse.FileType('r')(os.path.abspath(x)), help='The problem file to parse')
 
@@ -61,7 +61,7 @@ def main():
   elif args.command == 'deploy':
     deploy()
   elif args.command == 'run':
-    run_problem_tests(args.directory)
+    run_problem_tests(args.path)
   else:
     print('Invalid command')
 

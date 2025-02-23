@@ -26,11 +26,14 @@ def format_test_input(parameters, test_input):
     return formatted_input
 
 
-def run_problem_tests(problem_directory):
-    problem_directory = os.path.abspath(problem_directory)
-    print(f"Testing problems in {problem_directory}")
-    problem_files = list(Path(problem_directory).glob('*.md'))
-    print(f"Found {len(problem_files)} problem files")
+def run_problem_tests(path):
+    path = os.path.abspath(path)
+    if os.path.isfile(path):
+        problem_files = [Path(path)]
+    else:
+        problem_files = list(Path(path).glob('*.md'))
+    print(f"Testing problems in {path}")
+    print(f"Found {len(problem_files)} problem file(s)")
     failures = 0
     
     for problem_file in problem_files:
@@ -81,10 +84,10 @@ def run_problem_tests(problem_directory):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run problems from a given directory")
-    parser.add_argument("directory", help="Directory containing problem .md files")
+    parser = argparse.ArgumentParser(description="Run problems from a given path (directory or single file)")
+    parser.add_argument("path", help="Path containing problem .md files or a single problem file")
     args = parser.parse_args()
-    run_problem_tests(args.directory)
+    run_problem_tests(args.path)
 
 
 if __name__ == '__main__':
