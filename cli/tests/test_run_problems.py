@@ -9,7 +9,7 @@ from bitshift.cloud_functions.main import hello_http
 
 class TestRunProblems(unittest.TestCase):
   def setUp(self):
-    self.directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'problems'))
+    self.directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'problems'))
     self.parser = parse_problem_file
 
   def convert_to_string(self, value):

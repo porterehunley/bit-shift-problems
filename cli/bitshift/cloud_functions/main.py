@@ -56,6 +56,33 @@ def loose_equals(a, b):
 
   return "\n" + loose_equals_def + "\n" + code
 
+def construct_code_from_request(request_json, user_input):
+  heading = request_json['header']
+  truth_code = request_json['truth']
+  function_name = heading.split()[1].split("(")[0]
+  truth_name = function_name + "_truth"
+
+  code = ""
+  if "auxiliary" in request_json:
+    code += request_json["auxiliary"]
+    code += "\n"
+
+  code += add_loose_equals(code)
+  code += "\n"
+
+  code += request_json["code"]
+  code += f"\ntest={user_input}"
+  code += f"\noutput={function_name}(**test)"
+  code += "\n"
+
+  truth_code_modified = truth_code.replace(f"def {function_name}", f"def {truth_name}")
+  code += truth_code_modified
+  code += f"\nexpected={truth_name}(**test)"
+  code += f"\nis_expected= loose_equals(output, expected)"
+  code += "\nprint(is_expected)"
+  
+  return code
+
 @functions_framework.http
 def hello_http(request):
   """HTTP Cloud Function.
@@ -71,9 +98,8 @@ def hello_http(request):
   if not request_json or 'code' not in request_json:
     return 'Invalid input', 400
 
-  heading = request_json['header']
-  truth_code = request_json['truth']
   user_input = validate_inputs(request_json['input'])
+  
   if 'input_validation' in request_json:
     input_validation_function = request_json['input_validation']
     input_validation_name = input_validation_function.split('def ')[1].split('(')[0]
@@ -107,31 +133,11 @@ def hello_http(request):
       "parsing_errors": parse_errors
     }}
 
-  function_name = heading.split()[1].split("(")[0]
-  truth_name = function_name+"_truth"
-
   results = []
-
-  code = ''
-  if ('auxiliary' in request_json):
-    code += request_json['auxiliary']
-    code += '\n'
   
-  code += add_loose_equals(code)
-  code += '\n'
-  
-  code += request_json['code']
-  code += f'\ntest={user_input}'
-  code += f'\noutput={function_name}(**test)'
-  code += '\n'
-  truth_code_modified = truth_code.replace(f'def {function_name}', f'def {truth_name}')
-  code += truth_code_modified
-  code += f'\nexpected={truth_name}(**test)'
-  code += f'\nis_expected= loose_equals(output, expected)'
-  code += '\nprint(is_expected)'
+  code = construct_code_from_request(request_json, user_input)
 
   namespace = {}
-
   buffer = StringIO()
   sys.stdout = buffer
   exec(code, namespace)
