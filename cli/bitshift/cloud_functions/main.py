@@ -4,6 +4,9 @@ import sys
 
 def validate_input(input_type, input_value):
   if input_type == "List[int]":
+    if not input_value:
+      return [] 
+
     try:
       values = list(map(int, input_value.split(',')))
       return values
