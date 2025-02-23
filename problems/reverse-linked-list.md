@@ -42,7 +42,7 @@ def reverseList(lst: List[int]) -> List[int]:
     curr = head
     prev = None
     if not curr:
-        return head
+        return [] 
 
     while curr.next:
         temp = curr.next
