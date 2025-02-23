@@ -27,7 +27,7 @@ def is_code_section(node):
 
 def validate_code_section(node):
   if node['type'] != 'CodeFence':
-    raise ValueError('Variant declaration must be followed by code')
+    return False
   
   if node['language'] != 'python':
     raise ValueError('Code must be labeled as Python')
