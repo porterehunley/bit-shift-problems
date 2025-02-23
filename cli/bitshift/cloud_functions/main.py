@@ -117,7 +117,7 @@ def hello_http(request):
     code += request_json['auxiliary']
     code += '\n'
   
-  code += add_loose_equals(request_json['code'])
+  code += add_loose_equals(code)
   code += '\n'
   
   code += request_json['code']
