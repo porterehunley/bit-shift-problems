@@ -49,3 +49,32 @@ def solution_function():
     "another_parameter": 69 
 }
 ```
+
+## Tests
+**Breaking Input**
+```python
+{
+    "parameter_name": "example",
+    "another_parameter": 42 
+}
+```
+
+```json
+{
+    "is_breaking": true 
+}
+```
+
+**Non-Breaking Input**
+```python
+{
+    "parameter_name": "...",
+    "another_parameter": 69 
+}
+```
+
+```json
+{
+    "is_breaking": false
+}
+```
