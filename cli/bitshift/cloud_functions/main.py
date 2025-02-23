@@ -4,6 +4,9 @@ import sys
 
 def validate_input(input_type, input_value):
   if input_type == "List[int]":
+    if not input_value:
+      return [] 
+
     try:
       values = list(map(int, input_value.split(',')))
       return values
@@ -37,6 +40,21 @@ def validate_inputs(params):
   
   return results
 
+def add_loose_equals(code):
+  loose_equals_def = '''
+def loose_equals(a, b):
+    if isinstance(a, list) and isinstance(b, list):
+        if len(a) != len(b):
+            return False
+        for x, y in zip(a, b):
+            if x != y:
+                return False
+        return True
+    else:
+        return a == b
+'''
+
+  return "\n" + loose_equals_def + "\n" + code
 
 @functions_framework.http
 def hello_http(request):
@@ -99,6 +117,9 @@ def hello_http(request):
     code += request_json['auxiliary']
     code += '\n'
   
+  code += add_loose_equals(request_json['code'])
+  code += '\n'
+  
   code += request_json['code']
   code += f'\ntest={user_input}'
   code += f'\noutput={function_name}(**test)'
@@ -106,7 +127,7 @@ def hello_http(request):
   truth_code_modified = truth_code.replace(f'def {function_name}', f'def {truth_name}')
   code += truth_code_modified
   code += f'\nexpected={truth_name}(**test)'
-  code += f'\nis_expected= output == expected'
+  code += f'\nis_expected= loose_equals(output, expected)'
   code += '\nprint(is_expected)'
 
   namespace = {}
