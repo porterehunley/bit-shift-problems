@@ -23,7 +23,7 @@ def parse_parameters(header: str) -> List[Tuple[str, str]]:
 def is_code_section(node):
   return (node['type'] == 'Paragraph' and 
       node['children'][0]['type'] == 'Strong' and
-      node['children'][0]['children'][0]['content'] in ['Problem', 'Truth', 'Auxiliary', 'Input Validation'])
+      node['children'][0]['children'][0]['content'] in ['Problem', 'Truth', 'Auxiliary', 'Input Validation', 'Input Transformer', 'Output Transformer'])
 
 def validate_code_section(node):
   if node['type'] != 'CodeFence':
@@ -135,7 +135,31 @@ def parse_problem_file(problem_file):
 
   child_idx += 2
 
+  # Input Transformer section
+  if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
+    code_section_type = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    if code_section_type == 'Input Transformer':
+      if validate_code_section(ast['children'][child_idx+1]):
+        code = ast['children'][child_idx+1]['children'][0]['content']
+        code_sections['input_transformer'] = code
+        child_idx += 2
+      else:
+        raise ValueError("Invalid Input Transformer code section")
+
+
+  # Output Transformer section
+  if child_idx < len(ast['children']) and is_code_section(ast['children'][child_idx]):
+    code_section_type = ast['children'][child_idx]['children'][0]['children'][0]['content']
+    if code_section_type == 'Output Transformer':
+      if validate_code_section(ast['children'][child_idx+1]):
+        code = ast['children'][child_idx+1]['children'][0]['content']
+        code_sections['output_transformer'] = code
+        child_idx += 2
+      else:
+        raise ValueError("Invalid Output Transformer code section")
+
   parameters = parse_parameters(problem_header)
+  # child_idx += 2
 
   # Now do the examples section
   if (child_idx >= len(ast['children']) or
