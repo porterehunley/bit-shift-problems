@@ -57,6 +57,12 @@ def run_problem_tests(path):
 
             if 'input_validation' in parsed_problem.get('code_sections', {}):
                 payload['input_validation'] = parsed_problem.get('code_sections', {}).get('input_validation')
+
+            if 'output_transformer' in parsed_problem.get('code_sections', {}):
+                payload['output_transformer'] = parsed_problem.get('code_sections', {}).get('output_transformer')   
+
+            if 'input_transformer' in parsed_problem.get('code_sections', {}):
+                payload['input_transformer'] = parsed_problem.get('code_sections', {}).get('input_transformer')
             
             payload_bytes = json.dumps(payload).encode('utf-8')
             environ = {

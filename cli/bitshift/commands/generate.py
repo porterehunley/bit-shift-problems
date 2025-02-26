@@ -44,12 +44,17 @@ def generate(problem_file_path):
   }
 
   code_sections = parsed_problem.get('code_sections', {})
-  if 'auxiliary' in code_sections:
-    payload['auxiliary'] = code_sections['auxiliary']
-  if 'input_validation' in code_sections:
-    payload['input_validation'] = code_sections['input_validation']
+  payload.update(code_sections)
 
   user_input = validate_inputs(payload['input'])
+  parse_errors = []
+  for name, value in user_input.items():
+    if value is False:
+      parse_errors.append(name)
+
+  if parse_errors:
+    error_message = f"Error parsing inputs: {', '.join(parse_errors)}"
+    raise ValueError(error_message)
 
   generated_code = construct_code_from_request(payload, user_input)
 

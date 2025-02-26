@@ -3,7 +3,7 @@ from io import StringIO
 import sys
 
 def validate_input(input_type, input_value):
-  if input_type == "List[int]":
+  if input_type in ["List[int]", "ListNode"]:
     if not input_value:
       return [] 
 
@@ -63,21 +63,36 @@ def construct_code_from_request(request_json, user_input):
   truth_name = function_name + "_truth"
 
   code = ""
+  code += f"test={user_input}\n\n"
   if "auxiliary" in request_json:
     code += request_json["auxiliary"]
     code += "\n"
+
+  if "input_transformer" in request_json:
+    code += request_json["input_transformer"]
+    code += "\n"
+    input_transformer_name = request_json["input_transformer"].split("def ")[1].split("(")[0]
+    code += f"\ntest={input_transformer_name}(**test)\n\n"
 
   code += add_loose_equals(code)
   code += "\n"
 
   code += request_json["code"]
-  code += f"\ntest={user_input}"
-  code += f"\noutput={function_name}(**test)"
-  code += "\n"
+  code += f"\noutput={function_name}(**test)\n\n"
 
   truth_code_modified = truth_code.replace(f"def {function_name}", f"def {truth_name}")
   code += truth_code_modified
-  code += f"\nexpected={truth_name}(**test)"
+  code += "\n"
+  code += f"\nexpected={truth_name}(**test)\n"
+
+  if "output_transformer" in request_json:
+    code += "\n"
+    code += request_json["output_transformer"]
+    code += "\n"
+    output_transformer_name = request_json["output_transformer"].split("def ")[1].split("(")[0]
+    code += f"\nexpected={output_transformer_name}(expected)"
+    code += f"\noutput={output_transformer_name}(output)"
+
   code += f"\nis_expected= loose_equals(output, expected)"
   code += "\nprint(is_expected)"
   
